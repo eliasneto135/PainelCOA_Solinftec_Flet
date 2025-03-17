@@ -2,9 +2,9 @@ import threading
 import time
 import flet as ft
 from functions import *
-from cncts.apis import *
+from src.cncts.apis import *
 from graphs import Graphs
-from cncts.auth_firebase import autenticar_usuario, registrar_usuario, alterar_senha
+from src.cncts.auth_firebase import autenticar_usuario, registrar_usuario, alterar_senha, registrar_log
 
 
 class DadosWindow:
@@ -61,8 +61,8 @@ def tela_login(page: ft.Page):
         else:
             try:
                 if autenticar_usuario(nome_usuario=lb_user, senha=lb_password):
-                    log = {'usuario': lb_user, 'datahora': f'{datetime.today()}'}
-                    response = requests.post(f'{URL_PROJECT_FIREBASE}/log.json', data=json.dumps(log))
+                    # log = {'usuario': lb_user, 'datahora': f'{datetime.today()}'}
+                    registrar_log(lb_user, f'{datetime.today()}')
                     window.set_username(lb_user)
                     page.clean()  # Limpa a tela de login
                     app(page, window)  # Inicia a aplicação principal
@@ -195,7 +195,8 @@ def app(page: ft.Page, window):
 
     def salva_param_firebase(e):
         key_id = e.control.data
-        dados = {'alrt_frota': cbx_alrt_talhao.value,
+        dados = {'frota': key_id,
+                 'alrt_frota': cbx_alrt_talhao.value,
                  'alrt_implem': cbx_alrt_veloc.value,
                  'alrt_op': cbx_alrt_rpm.value,
                  'alrt_oper': cbx_alrt_oper.value,
@@ -208,7 +209,7 @@ def app(page: ft.Page, window):
                  'param_temp': int(tx_param_temp.value),
                  'param_veloc': int(tx_param_veloc.value)
         }
-        requests.patch(f'{URL_PROJECT_FIREBASE}/parametros/{e.control.data}.json', data=json.dumps(dados))
+        edit_param(key_id, dados)
         bs_param.open = False
         page.update()
 

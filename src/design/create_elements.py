@@ -2,6 +2,7 @@ import json
 import flet as ft
 import requests
 from src.cncts.getenv import URL_PROJECT_FIREBASE
+from src.cncts.auth_firebase import *
 
 
 def create_row_info(frt, frota, talhao, veloc, rpm, temp, rt, oper, implem, op,last_com,days_com_off,other_details):
@@ -10,46 +11,48 @@ def create_row_info(frt, frota, talhao, veloc, rpm, temp, rt, oper, implem, op,l
         'orderBy': '"frota"',  # Precisa estar entre aspas duplas no Firebase
         'equalTo': f'"{frt}"'  # Também precisa de aspas duplas
     }
-    param_frota = requests.get(f'{URL_PROJECT_FIREBASE}/parametros.json', params=params)
-    if param_frota.json() == {}:
-        data = {'frota': frt,
-                'alrt_frota': True,
-                'alrt_talhao': True,
-                'alrt_veloc': True,
-                'alrt_rpm': True,
-                'alrt_temp': True,
-                'alrt_rt': True,
-                'alrt_oper': True,
-                'alrt_implem': True,
-                'alrt_op': True,
-                'param_veloc': 3,
-                'param_rpm': 2100,
-                'param_temp': 103
-        }
-        requests.post(f'{URL_PROJECT_FIREBASE}/parametros.json', data=json.dumps(data))
-    else:
-        param = param_frota.json()
-        for id, dados in param.items():
-            json_param_frota = {
-                "frota": dados['frota'],
-                "id_firebase": id,
-                "alertas": {
-                    'alrt_frota': dados['alrt_frota'],
-                    'alrt_talhao': dados['alrt_talhao'],
-                    'alrt_veloc': dados['alrt_veloc'],
-                    'alrt_rpm': dados['alrt_rpm'],
-                    'alrt_temp': dados['alrt_temp'],
-                    'alrt_rt': dados['alrt_rt'],
-                    'alrt_oper': dados['alrt_oper'],
-                    'alrt_implem': dados['alrt_implem'],
-                    'alrt_op': dados['alrt_op']
-                },
-                "parametros": {
-                    'param_veloc':  dados['param_veloc'],
-                    'param_rpm':  dados['param_rpm'],
-                    'param_temp':  dados['param_temp']
-                }
-            }
+    json_param_frota = post_param(frt)
+    # if param_frota.json() == {}:
+    #     data = {'frota': frt,
+    #             'alrt_frota': True,
+    #             'alrt_talhao': True,
+    #             'alrt_veloc': True,
+    #             'alrt_rpm': True,
+    #             'alrt_temp': True,
+    #             'alrt_rt': True,
+    #             'alrt_oper': True,
+    #             'alrt_implem': True,
+    #             'alrt_op': True,
+    #             'param_veloc': 3,
+    #             'param_rpm': 2100,
+    #             'param_temp': 103
+    #     }
+    #     requests.post(f'{URL_PROJECT_FIREBASE}/parametros.json', data=json.dumps(data))
+    # else:
+    #     param = param_frota.json()
+    #     print(param)
+    #     print(param.items)
+    #     for id, dados in param.items():
+    #         json_param_frota = {
+    #             "frota": dados['frota'],
+    #             "id_firebase": id,
+    #             "alertas": {
+    #                 'alrt_frota': dados['alrt_frota'],
+    #                 'alrt_talhao': dados['alrt_talhao'],
+    #                 'alrt_veloc': dados['alrt_veloc'],
+    #                 'alrt_rpm': dados['alrt_rpm'],
+    #                 'alrt_temp': dados['alrt_temp'],
+    #                 'alrt_rt': dados['alrt_rt'],
+    #                 'alrt_oper': dados['alrt_oper'],
+    #                 'alrt_implem': dados['alrt_implem'],
+    #                 'alrt_op': dados['alrt_op']
+    #             },
+    #             "parametros": {
+    #                 'param_veloc':  dados['param_veloc'],
+    #                 'param_rpm':  dados['param_rpm'],
+    #                 'param_temp':  dados['param_temp']
+    #             }
+    #         }
 
     
     icone = ft.Icon(ft.icons.SETTINGS, col=1)

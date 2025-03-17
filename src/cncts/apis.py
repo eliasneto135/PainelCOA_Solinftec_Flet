@@ -225,13 +225,14 @@ class Api_Liberali:
     def __init__(self):
         ...
     def cnct_api_liberali(self, requisicao, api):
-        address = IP_API_LIBERALI
+        address = URL_API_LIBERALI
         url = f"{address}{api}"
         # print(url)
         headers = {
             'Authorization': f'{AUTH_API_LIBERALI}',
             'Content-Type': 'application/json'
         }
+        # print(headers)
         tentativas = 0
         max_tentativas = 10  # Número máximo de tentativas
         intervalo = 3  # Intervalo em segundos entre as tentativas
@@ -241,6 +242,7 @@ class Api_Liberali:
                 response = requests.post(url, headers=headers, data=requisicao)
                 response.raise_for_status()  # Garante que o status code seja 200.
                 retorno = response.json()
+                # print(retorno)
                 return retorno, response  # Retorna o token se obtido com sucesso
             except (requests.exceptions.RequestException, KeyError) as e:
                 print(f"Erro ao se comunicar com API da Liberali (tentativa {tentativas + 1}): {e}")

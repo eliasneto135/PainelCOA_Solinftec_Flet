@@ -1,5 +1,5 @@
-from ..cncts.apis import *
-from ..cncts.crud_sql import gera_log
+from src.cncts.apis import *
+from src.cncts.crud_sql import gera_log
 import datetime
 
 

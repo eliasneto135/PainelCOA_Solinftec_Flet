@@ -3,15 +3,15 @@ import sys
 from os import getenv
 from dotenv import load_dotenv
 
-if getattr(sys, 'frozen', False):  # Se estiver rodando como executável
-    base_dir = sys._MEIPASS
-else:
-    base_dir = os.path.dirname(__file__)
+# if getattr(sys, 'frozen', False):  # Se estiver rodando como executável
+#     base_dir = sys._MEIPASS
+# else:
+#     base_dir = os.path.dirname(__file__)
+#
+# dotenv_path = os.path.join(base_dir, ".env")
+load_dotenv()
 
-dotenv_path = os.path.join(base_dir, ".env")
-load_dotenv(dotenv_path)
-
-IP_API_LIBERALI = getenv("IP_API_LIBERALI")
+URL_API_LIBERALI = getenv("URL_API_LIBERALI")
 URL_FIREBASE = getenv("URL_FIREBASE")
 AUTH_API_LIBERALI = getenv("AUTH_API_LIBERALI")
 URL_DB_SQLITE = getenv("URL_DB_SQLITE")
