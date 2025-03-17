@@ -1,0 +1,52 @@
+[project]
+name = "painel_solinftec_nat"
+version = "0.1.0"
+description = ""
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [
+    { name = "Flet developer", email = "you@example.com" }
+]
+dependencies = [
+  "sqlalchemy (>=2.0.38,<3.0.0)",
+  "pandas (>=2.2.3,<3.0.0)",
+  "plotly (>=6.0.0,<7.0.0)",
+  "flet (>=0.27.0)",
+  "requests (>=2.32.3,<3.0.0)",
+  "dotenv (>=0.9.9,<0.10.0)",
+  "flet-webview (>=0.1.0,<0.2.0)",
+  "seaborn (>=0.13.2,<0.14.0)",
+  "firebase-admin (>=6.6.0,<7.0.0)",
+  "bcrypt (>=4.3.0,<5.0.0)",
+  "pyinstaller (>=6.12.0,<7.0.0)"
+]
+
+[tool.flet]
+# org name in reverse domain name notation, e.g. "com.mycompany".
+# Combined with project.name to build bundle ID for iOS and Android apps
+org = "com.mycompany"
+
+# project display name that is used as an app title on Android and iOS home screens,
+# shown in window titles and about app dialogs on desktop.
+product = "painel_solinftec_nat"
+
+# company name to display in about app dialogs
+company = "Flet"
+
+# copyright text to display in about app dialogs
+copyright = "Copyright (C) 2025 by Flet"
+
+[tool.flet.app]
+path = "src"
+
+[tool.uv]
+dev-dependencies = [
+    "flet[all]>=0.26.0",
+]
+
+[tool.poetry]
+package-mode = false
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.13" # Or >=3.9,<3.14 if you want to include 3.13
+
