@@ -1,4 +1,5 @@
 import sqlite3 as sql
+import time
 
 from pandas import json_normalize
 from sqlalchemy import create_engine
@@ -9,12 +10,31 @@ class CrudSqlite:
         self.database = URL_DB_SQLITE
 
     def select(self, query):
-        con = sql.connect(self.database)
-        con.row_factory = sql.Row
-        cur = con.execute(query)
-        rows = cur.fetchall()
-        con.close()
-        return rows
+        tentativas = 0
+        max_tentativas = 10  # Número máximo de tentativas
+        intervalo = 3  # Intervalo em segundos entre as tentativas
+
+        while tentativas < max_tentativas:
+            try:
+                con = sql.connect(self.database)
+                con.row_factory = sql.Row
+                cur = con.cursor()  # Obtém um cursor usando con.cursor()
+                cur.execute(query)
+                rows = cur.fetchall()
+                con.close()
+                return rows
+            except sql.Error as e:  # Captura exceções específicas do SQLite
+                print(f"Erro ao executar consulta SQL (Tentativa {tentativas + 1}): {e}")
+                tentativas += 1
+                if tentativas < max_tentativas:
+                    time.sleep(intervalo)
+                else:
+                    print("Número máximo de tentativas excedido. Consulta SQL falhou.")
+                    return None  # Retorna None caso todas as tentativas falhem.
+            finally:
+                if 'con' in locals() and con:  # Verifica se a variavel con existe, e se a conexão ainda está aberta.
+                    con.close()
+
 
     def insert(self, df, table: str, if_exists: str):
         engine = create_engine(f'sqlite:///{self.database}')
