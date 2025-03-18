@@ -55,8 +55,20 @@ class Graphs:
         list_json = json_normalize(list_json)
 
         opers_slft = ApiSolinftec().get_api_22(0)
-        opers_slft = json_normalize(opers_slft)
+        if not opers_slft:
+            opers_slft = [{'CD_ID': None, 'DT_MOVIMENTACAO': None, 'CD_CORPORATIVO': None, 'CD_UNIDADE': None,
+             'CD_ORDEM_SERVICO': 0, 'CD_JORNADA': None, 'DT_HR_INI_JORNADA': None,
+             'DT_HR_FIM_JORNADA': None, 'CD_EQUIPE': None, 'CD_GRUPO_EQUIPAMENTO': None,
+             'DESC_GRUPO_EQUIPAMENTO': None, 'CD_EQUIPAMENTO': None,
+             'DESC_EQUIPAMENTO': None, 'CD_OPERADOR': None, 'CD_IMPLEMENTO': None,
+             'CD_OPERACAO_CB': None, 'CD_OPERACAO': '', 'FG_TIPO_OPERACAO': None, 'CD_OPERACAO_PARADA': None,
+             'DT_HR_INI_REGNAJORNADA': None, 'VL_TEMPO_SEGUNDOS': None, 'VL_TEMPO_MOTOR_LIGADO': None,
+             'VL_TEMPO_MOTOR_OCIOSO': None, 'VL_HORIMETRO_INICIAL': None, 'VL_HORIMETRO_FINAL': None,
+             'CD_FAZENDA': None, 'DESC_FAZENDA': None, 'CD_ZONA': None, 'CD_TALHAO': 0,
+             'DESC_TALHAO': None, 'VL_AREA_HECTARES_EQUIPAMENTO': None, 'VL_CONSUMO': None,
+             'VL_VELOCIDADE_MEDIA': None, 'VL_RPM_MEDIO': None, 'PAGING_RN': None}]
 
+        opers_slft = json_normalize(opers_slft)
         # Combina os dados
         opers_whith_rt = pd.merge(opers_slft, list_json, left_on='CD_ORDEM_SERVICO', right_on='DocEntry', how="left")
         opers_complet = pd.merge(opers_whith_rt, data_oper, left_on='CD_OPERACAO', right_on='cdOperacao', how="left")

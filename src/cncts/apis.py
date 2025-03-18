@@ -121,7 +121,7 @@ class ApiSolinftec:
                 resposta = requests.post(url_auth, json=data, headers=headers)
                 resposta.raise_for_status()  # Garante que o status code seja 200.
                 token = resposta.json()['token']
-                print("Token obtido com sucesso!!!")
+                # print("Token obtido com sucesso!!!")
                 return token  # Retorna o token se obtido com sucesso
             except (requests.exceptions.RequestException, KeyError) as e:
                 print(f"Erro ao obter o token (tentativa {tentativas + 1}): {e}")
